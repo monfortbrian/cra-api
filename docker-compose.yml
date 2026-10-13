@@ -1,0 +1,19 @@
+services:
+  cra-api:
+    build: .
+    container_name: apps-cra-api
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "127.0.0.1:8001:8001"
+    networks:
+      - global-infra
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cra-api.rule=Host(`api.cra.test`)"
+      - "traefik.http.routers.cra-api.entrypoints=web"
+      - "traefik.http.services.cra-api.loadbalancer.server.port=8001"
+
+networks:
+  global-infra:
+    external: true
